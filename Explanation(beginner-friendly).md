@@ -18,7 +18,7 @@
 ## 5. Training
 - During training, the model takes the random numbers (features) and tries to predict their categories. Initially, the model's predictions are random because it hasn't learned anything yet.
 
-# 6. Loss Calculation
+## 6. Loss Calculation
 - The model calculates the error (loss) between its predictions and the actual categories (ground truth labels). The aim is to minimize this error.
 
 ## 7. Backpropagation

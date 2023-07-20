@@ -1,71 +1,90 @@
 import numpy as np
-import matplotlib.pyplot as plt
+from keras.models import Sequential
+from keras.layers import Dense
 import tkinter as tk
-
-class NeuralNetwork:
-    def __init__(self):
-        np.random.seed(42)  # For reproducibility
-        self.weights = 2 * np.random.random((4, 4)) - 1  # Initialization of weights
-
-    def sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
-
-    def sigmoid_derivative(self, x):
-        return x * (1 - x)
-
-    def train(self, inputs, outputs, iterations):
-        loss_history = []
-        for iteration in range(iterations):
-            output = self.predict(inputs)
-            error = outputs - output
-            adjustment = np.dot(inputs.T, error * self.sigmoid_derivative(output))
-            self.weights += adjustment
-            loss = np.mean(np.square(outputs - output))  # Calculate mean squared error for visualization
-            loss_history.append(loss)
-        return loss_history
-
-    def predict(self, inputs):
-        return self.sigmoid(np.dot(inputs, self.weights))
+from tkinter import messagebox
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class GUI:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Neural Network Visualization")
-        self.canvas = tk.Canvas(self.root, width=400, height=300, bg="white")  # Creating a canvas to draw the loss graph
-        self.label_loss = tk.Label(self.root, text="Loss:", font=("Arial", 12))
-        self.label_loss_val = tk.Label(self.root, text="", font=("Arial", 12))
-        self.button = tk.Button(self.root, text="Start Training", command=self.start_training)  # Button to start training
-        self.canvas.pack()
-        self.label_loss.pack(side=tk.LEFT)
-        self.label_loss_val.pack(side=tk.LEFT)
-        self.button.pack()
+        self.root.title("Number Classifier")
+        self.root.geometry("300x200")
 
-    def draw_loss_graph(self, loss_history):
-        self.canvas.delete("all")  # Clear canvas
-        num_iterations = len(loss_history)
-        max_loss = max(loss_history)
-        canvas_width = self.canvas.winfo_width()
-        canvas_height = self.canvas.winfo_height()
-        for i in range(num_iterations - 1):  # Draw lines connecting the points
-            x1 = i * canvas_width / num_iterations
-            y1 = canvas_height - (loss_history[i] / max_loss * canvas_height)
-            x2 = (i+1) * canvas_width / num_iterations
-            y2 = canvas_height - (loss_history[i+1] / max_loss * canvas_height)
-            self.canvas.create_line(x1, y1, x2, y2, fill="blue")
+        # Entry field for threshold value
+        self.threshold_label = tk.Label(self.root, text="Reference Number:")
+        self.threshold_entry = tk.Entry(self.root)
+        self.threshold_entry.insert(0, "0.5234575")
 
-    def start_training(self):
-        inputs = np.array([[0, 0, 1, 1],
-                           [0, 1, 0, 1],
-                           [1, 1, 1, 1],
-                           [0, 0, 0, 1]])
+        # Entry field for number to predict
+        self.number_label = tk.Label(self.root, text="Number to predict:")
+        self.number_entry = tk.Entry(self.root)
+        self.number_entry.insert(0, "0.54")
 
-        outputs = np.array([[0, 1, 1, 0]]).T
-        neural_network = NeuralNetwork()
-        loss_history = neural_network.train(inputs, outputs, iterations=10000)
-        self.draw_loss_graph(loss_history)
-        predicted_output = neural_network.predict(inputs)
-        self.label_loss_val.config(text=f"MSE: {loss_history[-1]:.4f}")
-        print(f"Predicted Output: {predicted_output.T}")  # Printing the final predicted output
+        # Entry field for displaying prediction
+        self.result_label = tk.Label(self.root, text="Prediction:")
+        self.result_entry = tk.Entry(self.root)
+
+        # Button to start prediction
+        self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
+
+        # Button to exit the program
+        self.exit_button = tk.Button(self.root, text="Exit", command=self.root.quit)
+
+        # Arrange the widgets in the window
+        self.threshold_label.grid(row=0, column=0, padx=10, pady=10)
+        self.threshold_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.number_label.grid(row=1, column=0, padx=10, pady=10)
+        self.number_entry.grid(row=1, column=1, padx=10, pady=10)
+        self.result_label.grid(row=2, column=0, padx=10, pady=10)
+        self.result_entry.grid(row=2, column=1, padx=10, pady=10)
+        self.predict_button.grid(row=3, column=0, padx=10, pady=10)
+        self.exit_button.grid(row=3, column=1, padx=10, pady=10)
+
+    def predict(self):
+        threshold = float(self.threshold_entry.get())
+        number = float(self.number_entry.get())
+
+        # Prepare the data
+        X_train = np.random.rand(1000, 1)
+        y_train = (X_train >= threshold).astype(int)
+
+        # Define the model
+        model = Sequential()
+        model.add(Dense(64, input_dim=1, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(1, activation='sigmoid'))
+
+        # Compile the model
+        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+        # Train the model
+        history = model.fit(X_train, y_train, epochs=100, batch_size=10, verbose=0)
+
+        # Predict the class of the number
+        prediction = model.predict(np.array([[number]]))
+        self.result_entry.delete(0, tk.END)
+        self.result_entry.insert(0, f"{prediction[0][0]:.4f}")
+
+        # Show training loss and accuracy
+        messagebox.showinfo("Training Info", f"Final Loss: {history.history['loss'][-1]:.4f}\nFinal Accuracy: {history.history['accuracy'][-1]:.4f}")
+
+        # Plot training loss and accuracy
+        fig, ax = plt.subplots(2, 1, figsize=(6, 4))
+        ax[0].plot(history.history['loss'], label='Loss')
+        ax[1].plot(history.history['accuracy'], label='Accuracy', color='green')
+        ax[0].legend()
+        ax[1].legend()
+        plt.tight_layout()
+        plt.show()
+
+        # Display plot in tkinter window
+        # Uncomment the following lines to run locally
+        canvas = FigureCanvasTkAgg(fig, master=self.root)
+        canvas.draw()
+        canvas.get_tk_widget().grid(row=4, column=0, columnspan=2)
 
 gui = GUI()
-gui.root.mainloop()  # Start the main Tkinter loop
+gui.root.mainloop()

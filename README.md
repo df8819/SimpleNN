@@ -30,3 +30,5 @@ This is a simple number classification app built with Python and tkinter. It all
 
 ## Note:
 The Number Classifier application is a simplified example and may not provide accurate predictions for complex scenarios. It is intended for learning purposes and as a starting point for further development.
+
+![Main Window](/1689872799.png)

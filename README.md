@@ -1,6 +1,6 @@
 # Number Classifier
 
-This is a simple number classification app built with Python and tkinter. It allows you to train a model to classify numbers based on a reference number and predict whether a given number is higher or lower than the reference. And a somewhat nice GUI. We all like GUI's and some colors, right?😅✨
+This is a simple number classification _(multi-layer perceptron / feed-forward network)_ app built with Python and tkinter. It allows you to train a model to classify numbers based on a reference number and predict whether a given number is higher or lower than the reference. And a somewhat nice GUI. We all like GUI's and some colors, right?😅✨
 
 ## Requirements
 

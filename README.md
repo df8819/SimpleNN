@@ -7,7 +7,7 @@ This is a simple number classification app built with Python and tkinter. It all
 - [Python 3.x](https://www.python.org/downloads/)
 - [Git for Desktop](https://git-scm.com/downloads)
 
-## Auto Installation
+## Installation
 
 1. Navigate to the directory of your choice, click into the address bar, type **"cmd"** and hit Enter.
 2. Clone the repository with the command: `git clone https://github.com/df8819/SimpleNN.git` in the **CMD** Window.

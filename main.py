@@ -135,6 +135,12 @@ class GUI:
         self.ax[1].plot(history.history['accuracy'], label='Accuracy', color='green')
         self.ax[0].legend()
         self.ax[1].legend()
+
+        # Change line color for each prediction
+        lines = self.ax[1].get_lines()
+        last_line = lines[-1]
+        last_line.set_color(np.random.rand(3))
+
         self.fig.tight_layout()
         self.canvas.draw()
 

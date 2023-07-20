@@ -27,7 +27,7 @@ class GUI:
         self.layers_entry = tk.Entry(self.root)
         self.layers_entry.insert(0, "3")
 
-        self.nodes_label = tk.Label(self.root, text="Neurons:")
+        self.nodes_label = tk.Label(self.root, text="Nodes per Layer:")
         self.nodes_entry = tk.Entry(self.root)
         self.nodes_entry.insert(0, "16")
 

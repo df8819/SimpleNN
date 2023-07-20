@@ -11,8 +11,9 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 
 1. Navigate to the directory of your choice, click into the address bar, type **"cmd"** and hit Enter.
 2. Clone the repository with the command: `git clone https://github.com/df8819/SimpleNN.git` in the **CMD** Window.
-3. Double click: **"Update.bat"**.
-4. For later instances, use: **"Run.bat"**
+3. Open the cloned directory/folder.
+4. Double click: **"Update.bat"**.
+5. For later instances, use: **"Run.bat"**
 
 ## Features
 
@@ -31,4 +32,4 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 ## Note:
 The Number Classifier application is a simplified example and may not provide accurate predictions for complex scenarios. It is intended for learning purposes and as a starting point for further development and a better understanding of neural networks.
 
-![Main Window](/1689889302.png)
+![Main Window](/1689889589.png)

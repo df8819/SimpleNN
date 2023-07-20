@@ -2,7 +2,8 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, font
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import keras
@@ -13,20 +14,20 @@ class GUI:
         self.root = tk.Tk()
         self.root.title("Number Classifier")
         self.root.geometry("620x900")  # Adjusted window size
-        # self.root.resizable(False, False)
+        self.center_window()  # Center the main window
         self.root.resizable(True, True)
 
         self.threshold_label = tk.Label(self.root, text="Reference Number (between 0 and 1):")
         self.threshold_entry = tk.Entry(self.root)
-        self.threshold_entry.insert(0, "")
+        self.threshold_entry.insert(0, "0.5")
 
         self.number_label = tk.Label(self.root, text="Number to predict (between 0 and 1):")
         self.number_entry = tk.Entry(self.root)
-        self.number_entry.insert(0, "")
+        self.number_entry.insert(0, "0.52")
 
         self.layers_nodes_label = tk.Label(self.root, text="Layers/Nodes (Brain size):")
         self.layers_nodes_entry = tk.Entry(self.root)
-        self.layers_nodes_entry.insert(0, "64")
+        self.layers_nodes_entry.insert(0, "16")
 
         self.random_count_label = tk.Label(self.root, text="'Random number count' for training:")
         self.random_count_entry = tk.Entry(self.root)
@@ -35,6 +36,8 @@ class GUI:
         self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
 
         self.reset_button = tk.Button(self.root, text="Reset Graph", command=self.reset_graph)
+
+        self.guide_button = tk.Button(self.root, text="Guide", command=self.show_guide)
 
         self.exit_button = tk.Button(self.root, text="Exit", command=self.exit_program)
 
@@ -48,6 +51,7 @@ class GUI:
         self.random_count_entry.grid(row=3, column=1, padx=10, pady=10)
         self.predict_button.grid(row=4, column=0, padx=10, pady=10)
         self.reset_button.grid(row=4, column=1, padx=10, pady=10)
+        self.guide_button.grid(row=11, column=0, padx=(10, 20), pady=10)
 
         self.progress_label = tk.Label(self.root, text="Training Progress:")
         self.progress_bar = ttk.Progressbar(self.root, mode="determinate", length=500)
@@ -77,8 +81,16 @@ class GUI:
         self.final_accuracy_label.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
         self.final_accuracy_entry.grid(row=10, column=1, columnspan=2, padx=10, pady=10)
 
-        self.exit_button.grid(row=11, column=1, padx=10, pady=10, sticky="")
+        self.exit_button.grid(row=11, column=1, padx=(10, 20), pady=10)
 
+    def center_window(self):
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        window_width = 620  # Adjust the window width here
+        window_height = 900  # Adjust the window height here
+        x = int((screen_width / 2) - (window_width / 2))
+        y = int((screen_height / 2) - (window_height / 2))
+        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     def predict(self):
         threshold = float(self.threshold_entry.get())
@@ -135,6 +147,43 @@ class GUI:
         answer = messagebox.askyesno("Exit Confirmation", "Are you sure you want to exit?")
         if answer:
             self.root.quit()
+
+    def show_guide(self):
+        guide = """
+        Number Classifier - User Guide
+
+        1. Reference Number (between 0 and 1):
+           - Enter a decimal number between 0 and 1.
+           - This number serves as a reference for the classification.
+
+        2. Number to predict (between 0 and 1):
+           - Enter a decimal number between 0 and 1.
+           - This number will be classified as higher or lower than the reference number.
+
+        3. Layers/Nodes (Brain size):
+           - Enter the number of nodes to use in each layer.
+           - The model uses a three-layer architecture with the same number of nodes in each layer.
+
+        4. 'Random number count' for training:
+           - Enter the count of random numbers to generate for training the model.
+
+        5. Predict Button:
+           - Click this button to perform the prediction based on the provided inputs.
+
+        6. Reset Graph Button:
+           - Click this button to clear the training progress graph.
+
+        Note: The prediction value closer to 1 indicates a higher prediction, while closer to 0 indicates a lower prediction.
+        """
+
+        guide_window = tk.Toplevel(self.root)
+        guide_window.title("User Guide")
+        guide_window.geometry("+{}+{}".format(self.root.winfo_x() + 50, self.root.winfo_y() + 50))
+        font_style = font.Font(family="Arial", size=10)  # Adjust the font size here
+
+        text = tk.Text(guide_window, font=font_style)
+        text.insert(tk.END, guide)
+        text.pack()
 
     class ProgressCallback(keras.callbacks.Callback):
         def __init__(self):

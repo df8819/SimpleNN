@@ -34,6 +34,6 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 - The Number Classifier application is a simplified example and may not provide accurate predictions for complex scenarios. It is intended for learning purposes and as a starting point for further development and a better understanding of neural networks.
 
 
-<a href="/1689894970.png"><img src="/1689894970.png" width="600" height="400"></a>
+![Main Window](/1689894970.png)
 
-<a href="/1689894983.png"><img src="/1689894983.png" width="600" height="400"></a>
+![Brain](/1689894983.png)

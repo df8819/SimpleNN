@@ -74,16 +74,16 @@ class GUI:
         self.progress_bar.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
         self.canvas.get_tk_widget().grid(row=8, column=0, columnspan=2, padx=10, pady=10)
 
-        self.prediction_label = tk.Label(self.root, text="Prediction:")
+        self.prediction_label = tk.Label(self.root, text="Prediction certainty for next number:")
         self.prediction_entry = tk.Entry(self.root, state="readonly")
 
         self.prediction_label.grid(row=9, column=0, columnspan=2, padx=10, pady=10)
         self.prediction_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=10)
 
-        self.final_loss_label = tk.Label(self.root, text="Final Loss:")
+        self.final_loss_label = tk.Label(self.root, text="Overall Loss:")
         self.final_loss_entry = tk.Entry(self.root, state="readonly")
 
-        self.final_accuracy_label = tk.Label(self.root, text="Final Accuracy:")
+        self.final_accuracy_label = tk.Label(self.root, text="Overall Accuracy:")
         self.final_accuracy_entry = tk.Entry(self.root, state="readonly")
 
         self.final_loss_label.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
@@ -125,7 +125,7 @@ class GUI:
         history = model.fit(x_train, y_train, epochs=100, batch_size=10, verbose=0, callbacks=[progress_callback])
 
         prediction = model.predict(np.array([[number]]))
-        prediction_value = f"{prediction[0][0]:.4f}"
+        prediction_value = "{:.3%}".format(prediction[0][0])
         self.prediction_entry.configure(state="normal")
         self.prediction_entry.delete(0, tk.END)
         self.prediction_entry.insert(0, prediction_value)
@@ -133,12 +133,14 @@ class GUI:
 
         self.final_loss_entry.configure(state="normal")
         self.final_loss_entry.delete(0, tk.END)
-        self.final_loss_entry.insert(0, f"{history.history['loss'][-1]:.4f}")
+        loss_value = "{:.3%}".format(history.history['loss'][-1])
+        self.final_loss_entry.insert(0, loss_value)
         self.final_loss_entry.configure(state="readonly")
 
         self.final_accuracy_entry.configure(state="normal")
         self.final_accuracy_entry.delete(0, tk.END)
-        self.final_accuracy_entry.insert(0, f"{history.history['accuracy'][-1]:.4f}")
+        accuracy_value = "{:.3%}".format(history.history['accuracy'][-1])
+        self.final_accuracy_entry.insert(0, accuracy_value)
         self.final_accuracy_entry.configure(state="readonly")
 
         self.ax[0].plot(history.history['loss'], label='Loss')
@@ -198,6 +200,7 @@ class GUI:
             want to have a small insight in the world of neural networks.
         - The prediction value closer to 1 indicates a higher prediction,
             while closer to 0 indicates a lower prediction.
+        - This model is set to 100 epochs and a batch size of 10.     
         """
 
         guide_window = tk.Toplevel(self.root)

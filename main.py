@@ -12,14 +12,14 @@ import keras
 class GUI:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Number Classifier")
+        self.root.title("Number Classifier - 'Feed forward neural Network' for educational purposes")
         self.center_window()  # Center the main window
 
-        self.threshold_label = tk.Label(self.root, text="Reference Number (between 0 and 1):")
+        self.threshold_label = tk.Label(self.root, text="Reference Number - Threshold (between 0 and 1):")
         self.threshold_entry = tk.Entry(self.root)
         self.threshold_entry.insert(0, "0.5")
 
-        self.number_label = tk.Label(self.root, text="Number to predict (between 0 and 1):")
+        self.number_label = tk.Label(self.root, text="Number to predict if >= 'Reference number' (between 0 and 1):")
         self.number_entry = tk.Entry(self.root)
         self.number_entry.insert(0, "0.52")
 
@@ -95,7 +95,7 @@ class GUI:
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         window_width = 620  # Adjust the window width here
-        window_height = 960  # Adjust the window height here
+        window_height = 940  # Adjust the window height here
         self.root.resizable(False, False)
         x = int((screen_width / 2) - (window_width / 2))
         y = int((screen_height / 2) - (window_height / 2))
@@ -168,15 +168,16 @@ class GUI:
 
     def show_guide(self):
         guide = """
-        Number Classifier - User Guide
+        Number Classifier - 'Feed forward neural Network' - User Guide
 
-        1. Reference Number (between 0 and 1):
+        1. Reference Number - Threshold (between 0 and 1):
            - Enter a decimal number between 0 and 1.
            - This number serves as a reference for the classification.
 
-        2. Number to predict (between 0 and 1):
+        2. Number to predict if >= 'Reference number' (between 0 and 1):
            - Enter a decimal number between 0 and 1.
            - This number will be classified as higher or lower than the reference number.
+           - The neural network will be trained to predict if this number is >= 'Reference Number'.
 
         3. Layers:
            - Enter the number of layers.
@@ -209,7 +210,7 @@ class GUI:
         guide_window.resizable(False, False)
         font_style = font.Font(family="Arial", size=10)  # Adjust the font size here
 
-        text = tk.Text(guide_window, font=font_style, width=80, height=35)  # Adjust the height to your desired value
+        text = tk.Text(guide_window, font=font_style, width=80, height=36)  # Adjust the height to your desired value
         text.insert(tk.END, guide)
         text.pack()
 

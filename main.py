@@ -98,8 +98,8 @@ class GUI:
         layers_nodes_input = int(self.layers_nodes_entry.get())
         random_count = int(self.random_count_entry.get())
 
-        X_train = np.random.uniform(0, 1, size=(random_count, 1)).round(8)
-        y_train = (X_train >= threshold).astype(int)
+        x_train = np.random.uniform(0, 1, size=(random_count, 1)).round(8)
+        y_train = (x_train >= threshold).astype(int)
 
         model = Sequential()
         layers_nodes = [layers_nodes_input] * 3
@@ -112,7 +112,7 @@ class GUI:
 
         progress_callback = self.ProgressCallback()
         progress_callback.model = self
-        history = model.fit(X_train, y_train, epochs=100, batch_size=10, verbose=0, callbacks=[progress_callback])
+        history = model.fit(x_train, y_train, epochs=100, batch_size=10, verbose=0, callbacks=[progress_callback])
 
         prediction = model.predict(np.array([[number]]))
         prediction_value = f"{prediction[0][0]:.4f}"

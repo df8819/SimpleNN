@@ -13,7 +13,7 @@ class GUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Number Classifier")
-        self.root.geometry("620x900")  # Adjusted window size
+        # self.root.geometry("620x900")  # Adjusted window size
         self.center_window()  # Center the main window
         self.root.resizable(True, True)
 
@@ -25,9 +25,13 @@ class GUI:
         self.number_entry = tk.Entry(self.root)
         self.number_entry.insert(0, "0.52")
 
-        self.layers_nodes_label = tk.Label(self.root, text="Layers/Nodes (Brain size):")
-        self.layers_nodes_entry = tk.Entry(self.root)
-        self.layers_nodes_entry.insert(0, "16")
+        self.layers_label = tk.Label(self.root, text="Layers:")
+        self.layers_entry = tk.Entry(self.root)
+        self.layers_entry.insert(0, "3")
+
+        self.nodes_label = tk.Label(self.root, text="Neurons:")
+        self.nodes_entry = tk.Entry(self.root)
+        self.nodes_entry.insert(0, "16")
 
         self.random_count_label = tk.Label(self.root, text="'Random number count' for training:")
         self.random_count_entry = tk.Entry(self.root)
@@ -43,15 +47,23 @@ class GUI:
 
         self.threshold_label.grid(row=0, column=0, padx=10, pady=10)
         self.threshold_entry.grid(row=0, column=1, padx=10, pady=10)
+
         self.number_label.grid(row=1, column=0, padx=10, pady=10)
         self.number_entry.grid(row=1, column=1, padx=10, pady=10)
-        self.layers_nodes_label.grid(row=2, column=0, padx=10, pady=10)
-        self.layers_nodes_entry.grid(row=2, column=1, padx=10, pady=10)
-        self.random_count_label.grid(row=3, column=0, padx=10, pady=10)
-        self.random_count_entry.grid(row=3, column=1, padx=10, pady=10)
-        self.predict_button.grid(row=4, column=0, padx=10, pady=10)
-        self.reset_button.grid(row=4, column=1, padx=10, pady=10)
-        self.guide_button.grid(row=11, column=0, padx=(10, 20), pady=10)
+
+        self.layers_label.grid(row=2, column=0, padx=10, pady=10)
+        self.layers_entry.grid(row=2, column=1, padx=10, pady=10)
+
+        self.nodes_label.grid(row=3, column=0, padx=10, pady=10)
+        self.nodes_entry.grid(row=3, column=1, padx=10, pady=10)
+
+        self.random_count_label.grid(row=4, column=0, padx=10, pady=10)
+        self.random_count_entry.grid(row=4, column=1, padx=10, pady=10)
+
+        self.predict_button.grid(row=5, column=0, padx=10, pady=10)
+        self.reset_button.grid(row=5, column=1, padx=10, pady=10)
+        self.guide_button.grid(row=12, column=0, padx=(10, 20), pady=10)
+        self.exit_button.grid(row=12, column=1, padx=(10, 20), pady=10)
 
         self.progress_label = tk.Label(self.root, text="Training Progress:")
         self.progress_bar = ttk.Progressbar(self.root, mode="determinate", length=500)
@@ -60,15 +72,15 @@ class GUI:
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
         self.canvas.draw()
 
-        self.progress_label.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
-        self.progress_bar.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
-        self.canvas.get_tk_widget().grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+        self.progress_label.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+        self.progress_bar.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+        self.canvas.get_tk_widget().grid(row=8, column=0, columnspan=2, padx=10, pady=10)
 
         self.prediction_label = tk.Label(self.root, text="Prediction:")
         self.prediction_entry = tk.Entry(self.root, state="readonly")
 
-        self.prediction_label.grid(row=8, column=0, columnspan=2, padx=10, pady=10)
-        self.prediction_entry.grid(row=8, column=1, columnspan=2, padx=10, pady=10)
+        self.prediction_label.grid(row=9, column=0, columnspan=2, padx=10, pady=10)
+        self.prediction_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=10)
 
         self.final_loss_label = tk.Label(self.root, text="Final Loss:")
         self.final_loss_entry = tk.Entry(self.root, state="readonly")
@@ -76,18 +88,16 @@ class GUI:
         self.final_accuracy_label = tk.Label(self.root, text="Final Accuracy:")
         self.final_accuracy_entry = tk.Entry(self.root, state="readonly")
 
-        self.final_loss_label.grid(row=9, column=0, columnspan=2, padx=10, pady=10)
-        self.final_loss_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=10)
-        self.final_accuracy_label.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
-        self.final_accuracy_entry.grid(row=10, column=1, columnspan=2, padx=10, pady=10)
-
-        self.exit_button.grid(row=11, column=1, padx=(10, 20), pady=10)
+        self.final_loss_label.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
+        self.final_loss_entry.grid(row=10, column=1, columnspan=2, padx=10, pady=10)
+        self.final_accuracy_label.grid(row=11, column=0, columnspan=2, padx=10, pady=10)
+        self.final_accuracy_entry.grid(row=11, column=1, columnspan=2, padx=10, pady=10)
 
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         window_width = 620  # Adjust the window width here
-        window_height = 900  # Adjust the window height here
+        window_height = 960  # Adjust the window height here
         x = int((screen_width / 2) - (window_width / 2))
         y = int((screen_height / 2) - (window_height / 2))
         self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
@@ -95,14 +105,15 @@ class GUI:
     def predict(self):
         threshold = float(self.threshold_entry.get())
         number = float(self.number_entry.get())
-        layers_nodes_input = int(self.layers_nodes_entry.get())
+        layers_input = int(self.layers_entry.get())
+        nodes_input = int(self.nodes_entry.get())
         random_count = int(self.random_count_entry.get())
 
         x_train = np.random.uniform(0, 1, size=(random_count, 1)).round(8)
         y_train = (x_train >= threshold).astype(int)
 
         model = Sequential()
-        layers_nodes = [layers_nodes_input] * 3
+        layers_nodes = [nodes_input] * layers_input
         model.add(Dense(layers_nodes[0], input_dim=1, activation='relu'))
         for nodes in layers_nodes[1:]:
             model.add(Dense(nodes, activation='relu'))
@@ -166,17 +177,21 @@ class GUI:
            - Enter a decimal number between 0 and 1.
            - This number will be classified as higher or lower than the reference number.
 
-        3. Layers/Nodes (Brain size):
-           - Enter the number of nodes to use in each layer.
-           - The model uses a three-layer architecture with the same number of nodes in each layer.
+        3. Layers:
+           - Enter the number of layers.
+           - {layers} * {nodes} = Neurons.
+           
+        4. Nodes:
+            - Enter the numbers of nodes in each layer.
+            - {layers} * {nodes} = Neurons.
 
-        4. 'Random number count' for training:
+        5. 'Random number count' for training:
            - Enter the count of random numbers to generate for training the model.
 
-        5. Predict Button:
+        6. Predict Button:
            - Click this button to perform the prediction based on the provided inputs.
 
-        6. Reset Graph Button:
+        7. Reset Graph Button:
            - Click this button to clear the training progress graph.
 
         Note: The prediction value closer to 1 indicates a higher prediction, while closer to 0 indicates a lower prediction.
@@ -187,7 +202,7 @@ class GUI:
         guide_window.geometry("+{}+{}".format(self.root.winfo_x() + 50, self.root.winfo_y() + 50))
         font_style = font.Font(family="Arial", size=10)  # Adjust the font size here
 
-        text = tk.Text(guide_window, font=font_style)
+        text = tk.Text(guide_window, font=font_style, height=30)  # Adjust the height to your desired value
         text.insert(tk.END, guide)
         text.pack()
 

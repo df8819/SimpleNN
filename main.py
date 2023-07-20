@@ -10,17 +10,19 @@ class GUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Number Classifier")
-        self.root.geometry("300x200")
+        self.root.geometry("600x580")  # Adjusted window size
+        self.root.resizable(False, False)
+
 
         # Entry field for threshold value
         self.threshold_label = tk.Label(self.root, text="Reference Number:")
         self.threshold_entry = tk.Entry(self.root)
-        self.threshold_entry.insert(0, "0.5234575")
+        self.threshold_entry.insert(0, "")
 
         # Entry field for number to predict
         self.number_label = tk.Label(self.root, text="Number to predict:")
         self.number_entry = tk.Entry(self.root)
-        self.number_entry.insert(0, "0.54")
+        self.number_entry.insert(0, "")
 
         # Entry field for displaying prediction
         self.result_label = tk.Label(self.root, text="Prediction:")
@@ -30,7 +32,7 @@ class GUI:
         self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
 
         # Button to exit the program
-        self.exit_button = tk.Button(self.root, text="Exit", command=self.root.quit)
+        self.exit_button = tk.Button(self.root, text="Exit", command=self.exit_program)
 
         # Arrange the widgets in the window
         self.threshold_label.grid(row=0, column=0, padx=10, pady=10)
@@ -41,6 +43,14 @@ class GUI:
         self.result_entry.grid(row=2, column=1, padx=10, pady=10)
         self.predict_button.grid(row=3, column=0, padx=10, pady=10)
         self.exit_button.grid(row=3, column=1, padx=10, pady=10)
+
+        # Figure for training loss and accuracy plot
+        self.fig, self.ax = plt.subplots(2, 1, figsize=(6, 4))
+
+        # Canvas for displaying the plot
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().grid(row=4, column=0, columnspan=2)
 
     def predict(self):
         threshold = float(self.threshold_entry.get())
@@ -71,20 +81,18 @@ class GUI:
         # Show training loss and accuracy
         messagebox.showinfo("Training Info", f"Final Loss: {history.history['loss'][-1]:.4f}\nFinal Accuracy: {history.history['accuracy'][-1]:.4f}")
 
-        # Plot training loss and accuracy
-        fig, ax = plt.subplots(2, 1, figsize=(6, 4))
-        ax[0].plot(history.history['loss'], label='Loss')
-        ax[1].plot(history.history['accuracy'], label='Accuracy', color='green')
-        ax[0].legend()
-        ax[1].legend()
-        plt.tight_layout()
-        plt.show()
+        # Update training loss and accuracy plot
+        self.ax[0].plot(history.history['loss'], label='Loss')
+        self.ax[1].plot(history.history['accuracy'], label='Accuracy', color='green')
+        self.ax[0].legend()
+        self.ax[1].legend()
+        self.fig.tight_layout()
+        self.canvas.draw()
 
-        # Display plot in tkinter window
-        # Uncomment the following lines to run locally
-        canvas = FigureCanvasTkAgg(fig, master=self.root)
-        canvas.draw()
-        canvas.get_tk_widget().grid(row=4, column=0, columnspan=2)
+    def exit_program(self):
+        answer = messagebox.askyesno("Exit Confirmation", "Are you sure you want to exit?")
+        if answer:
+            self.root.quit()
 
 gui = GUI()
 gui.root.mainloop()

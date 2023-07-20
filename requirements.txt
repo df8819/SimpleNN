@@ -1,4 +1,6 @@
 numpy
 keras
 matplotlib
+networkx
+threading
 tkinter

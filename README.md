@@ -23,6 +23,7 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 - Random number count: Enter the count of random numbers to generate for training the model.
 - 'Predict' Button: Click this button to perform the prediction based on the provided inputs.
 - 'Reset Graph' Button: Click this button to clear the training progress graph.
+- 'Visualize Brain' Button: Opens a window for a visual representation of the current model.
 - Note: The prediction will be displayed as % value after the training.
 
 ## Guide
@@ -32,4 +33,7 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 ## Note:
 - The Number Classifier application is a simplified example and may not provide accurate predictions for complex scenarios. It is intended for learning purposes and as a starting point for further development and a better understanding of neural networks.
 
-![Main Window](/1689889589.png)
+
+<a href="/1689894970.png"><img src="/1689894970.png" width="600" height="400"></a>
+
+<a href="/1689894983.png"><img src="/1689894983.png" width="600" height="400"></a>

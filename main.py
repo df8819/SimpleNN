@@ -6,6 +6,7 @@ from tkinter import ttk, messagebox, font
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import networkx as nx
 import keras
 
 
@@ -19,9 +20,9 @@ class GUI:
         self.threshold_entry = tk.Entry(self.root)
         self.threshold_entry.insert(0, "0.5")
 
-        self.number_label = tk.Label(self.root, text="Number to predict if >= 'Reference number' (between 0 and 1):")
+        self.number_label = tk.Label(self.root, text="Number to predict (between 0 and 1):")
         self.number_entry = tk.Entry(self.root)
-        self.number_entry.insert(0, "0.52")
+        self.number_entry.insert(0, "0.527")
 
         self.layers_label = tk.Label(self.root, text="Layers:")
         self.layers_entry = tk.Entry(self.root)
@@ -29,7 +30,7 @@ class GUI:
 
         self.nodes_label = tk.Label(self.root, text="Nodes per Layer:")
         self.nodes_entry = tk.Entry(self.root)
-        self.nodes_entry.insert(0, "16")
+        self.nodes_entry.insert(0, "4")
 
         self.random_count_label = tk.Label(self.root, text="Random number count for training:")
         self.random_count_entry = tk.Entry(self.root)
@@ -38,6 +39,8 @@ class GUI:
         self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
 
         self.reset_button = tk.Button(self.root, text="Reset Graph", command=self.reset_graph)
+
+        self.visualize_button = tk.Button(self.root, text="Visualize Brain", command=self.visualize_brain)
 
         self.guide_button = tk.Button(self.root, text="Guide", command=self.show_guide)
 
@@ -60,8 +63,9 @@ class GUI:
 
         self.predict_button.grid(row=5, column=0, padx=10, pady=10)
         self.reset_button.grid(row=5, column=1, padx=10, pady=10)
-        self.guide_button.grid(row=12, column=0, padx=(10, 20), pady=10)
-        self.exit_button.grid(row=12, column=1, padx=(10, 20), pady=10)
+        self.visualize_button.grid(row=6, column=0, padx=10, pady=10)
+        self.guide_button.grid(row=13, column=0, padx=(10, 20), pady=10)
+        self.exit_button.grid(row=13, column=1, padx=(10, 20), pady=10)
 
         self.progress_label = tk.Label(self.root, text="Training Progress:")
         self.progress_bar = ttk.Progressbar(self.root, mode="determinate", length=500)
@@ -70,15 +74,15 @@ class GUI:
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
         self.canvas.draw()
 
-        self.progress_label.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
-        self.progress_bar.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
-        self.canvas.get_tk_widget().grid(row=8, column=0, columnspan=2, padx=10, pady=10)
+        self.progress_label.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+        self.progress_bar.grid(row=8, column=0, columnspan=2, padx=10, pady=10)
+        self.canvas.get_tk_widget().grid(row=9, column=0, columnspan=2, padx=10, pady=10)
 
-        self.prediction_label = tk.Label(self.root, text="Prediction certainty for next number:")
+        self.prediction_label = tk.Label(self.root, text="Prediction certainty for 'Number to predict':")
         self.prediction_entry = tk.Entry(self.root, state="readonly")
 
-        self.prediction_label.grid(row=9, column=0, columnspan=2, padx=10, pady=10)
-        self.prediction_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=10)
+        self.prediction_label.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
+        self.prediction_entry.grid(row=10, column=1, columnspan=2, padx=10, pady=10)
 
         self.final_loss_label = tk.Label(self.root, text="Overall Loss:")
         self.final_loss_entry = tk.Entry(self.root, state="readonly")
@@ -86,16 +90,58 @@ class GUI:
         self.final_accuracy_label = tk.Label(self.root, text="Overall Accuracy:")
         self.final_accuracy_entry = tk.Entry(self.root, state="readonly")
 
-        self.final_loss_label.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
-        self.final_loss_entry.grid(row=10, column=1, columnspan=2, padx=10, pady=10)
-        self.final_accuracy_label.grid(row=11, column=0, columnspan=2, padx=10, pady=10)
-        self.final_accuracy_entry.grid(row=11, column=1, columnspan=2, padx=10, pady=10)
+        self.final_loss_label.grid(row=11, column=0, columnspan=2, padx=10, pady=10)
+        self.final_loss_entry.grid(row=11, column=1, columnspan=2, padx=10, pady=10)
+        self.final_accuracy_label.grid(row=12, column=0, columnspan=2, padx=10, pady=10)
+        self.final_accuracy_entry.grid(row=12, column=1, columnspan=2, padx=10, pady=10)
+
+    def visualize_brain(self):
+        plt.close('all')  # Close all existing figures
+
+        # Get the number of layers and nodes per layer from the input fields
+        layers = int(self.layers_entry.get()) + 1  # Add one more hidden layer
+        nodes_per_layer = int(self.nodes_entry.get())
+
+        # Create a new graph
+        G = nx.DiGraph()
+
+        # Add node for input layer
+        G.add_node((0, 0), pos=(0, 0.5), color='g')
+
+        # Add nodes and edges for each hidden layer
+        for layer in range(1, layers + 1):
+            if layer == layers:  # output layer
+                G.add_node((layer, 0), pos=(layer, 0.5), color='b')
+                for prev_node in range(nodes_per_layer):
+                    G.add_edge((layer - 1, prev_node), (layer, 0))
+            else:  # hidden layers
+                for node in range(nodes_per_layer):
+                    # Calculate the position of the node
+                    pos = (layer, node / (nodes_per_layer - 1) if nodes_per_layer > 1 else 0.5)
+
+                    # Add the node to the graph
+                    G.add_node((layer, node), pos=pos, color='y')
+
+                    # Connect the node to all nodes in the previous layer
+                    for prev_node in range(nodes_per_layer if layer > 1 else 1):
+                        G.add_edge((layer - 1, prev_node), (layer, node))
+
+        # Get node positions and colors
+        pos = nx.get_node_attributes(G, 'pos')
+        colors = [color for _, color in nx.get_node_attributes(G, 'color').items()]
+
+        # Create a new figure and draw the graph
+        fig, ax = plt.subplots()
+        nx.draw(G, pos, node_color=colors, with_labels=True, ax=ax)
+
+        # Show the plot
+        plt.show()
 
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         window_width = 620  # Adjust the window width here
-        window_height = 940  # Adjust the window height here
+        window_height = 980  # Adjust the window height here
         self.root.resizable(False, False)
         x = int((screen_width / 2) - (window_width / 2))
         y = int((screen_height / 2) - (window_height / 2))
@@ -161,6 +207,21 @@ class GUI:
         self.ax[1].clear()
         self.canvas.draw()
 
+        # Clear the prediction certainty field
+        self.prediction_entry.configure(state='normal')
+        self.prediction_entry.delete(0, tk.END)
+        self.prediction_entry.configure(state='readonly')
+
+        # Clear the overall loss field
+        self.final_loss_entry.configure(state='normal')
+        self.final_loss_entry.delete(0, tk.END)
+        self.final_loss_entry.configure(state='readonly')
+
+        # Clear the overall accuracy field
+        self.final_accuracy_entry.configure(state='normal')
+        self.final_accuracy_entry.delete(0, tk.END)
+        self.final_accuracy_entry.configure(state='readonly')
+
     def exit_program(self):
         answer = messagebox.askyesno("Exit Confirmation", "Are you sure you want to exit?")
         if answer:
@@ -195,6 +256,9 @@ class GUI:
 
         7. Reset Graph Button:
            - Click this button to clear the training progress graph.
+           
+        8. Visualize Brain Button:
+            - Opens a window for a visual representation of the current model.   
 
         Note:
         - This app is for educational purposes and people who
@@ -210,7 +274,7 @@ class GUI:
         guide_window.resizable(False, False)
         font_style = font.Font(family="Arial", size=10)  # Adjust the font size here
 
-        text = tk.Text(guide_window, font=font_style, width=80, height=36)  # Adjust the height to your desired value
+        text = tk.Text(guide_window, font=font_style, width=80, height=40)  # Adjust the height to your desired value
         text.insert(tk.END, guide)
         text.pack()
 

@@ -13,9 +13,7 @@ class GUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Number Classifier")
-        # self.root.geometry("620x900")  # Adjusted window size
         self.center_window()  # Center the main window
-        self.root.resizable(True, True)
 
         self.threshold_label = tk.Label(self.root, text="Reference Number (between 0 and 1):")
         self.threshold_entry = tk.Entry(self.root)
@@ -98,6 +96,7 @@ class GUI:
         screen_height = self.root.winfo_screenheight()
         window_width = 620  # Adjust the window width here
         window_height = 960  # Adjust the window height here
+        self.root.resizable(False, False)
         x = int((screen_width / 2) - (window_width / 2))
         y = int((screen_height / 2) - (window_height / 2))
         self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
@@ -194,15 +193,20 @@ class GUI:
         7. Reset Graph Button:
            - Click this button to clear the training progress graph.
 
-        Note: The prediction value closer to 1 indicates a higher prediction, while closer to 0 indicates a lower prediction.
+        Note:
+        - This app is for educational purposes and people who
+            want to have a small insight in the world of neural networks.
+        - The prediction value closer to 1 indicates a higher prediction,
+            while closer to 0 indicates a lower prediction.
         """
 
         guide_window = tk.Toplevel(self.root)
         guide_window.title("User Guide")
         guide_window.geometry("+{}+{}".format(self.root.winfo_x() + 50, self.root.winfo_y() + 50))
+        guide_window.resizable(False, False)
         font_style = font.Font(family="Arial", size=10)  # Adjust the font size here
 
-        text = tk.Text(guide_window, font=font_style, height=30)  # Adjust the height to your desired value
+        text = tk.Text(guide_window, font=font_style, width=80, height=35)  # Adjust the height to your desired value
         text.insert(tk.END, guide)
         text.pack()
 

@@ -96,6 +96,16 @@ class GUI:
         self.final_accuracy_entry.grid(row=12, column=1, columnspan=2, padx=10, pady=10)
 
     def visualize_brain(self):
+        # Display a messagebox and get the user's response
+        response = tk.messagebox.askyesno("WARNING - High CPU demand",
+                                          "WARNING:\n\nA big brain size (16 * 128 Neurons for example) can crash"
+                                          " the app or take VERY long to load the visualization. (And will"
+                                          " probably lag harder than 'Redfall' on release) \n\nContinue?")
+
+        # If the user clicked 'No', return without doing anything
+        if not response:
+            return
+
         plt.close('all')  # Close all existing figures
 
         # Get the number of layers and nodes per layer from the input fields

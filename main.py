@@ -12,7 +12,7 @@ class GUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Number Classifier")
-        self.root.geometry("620x980")  # Adjusted window size
+        self.root.geometry("620x900")  # Adjusted window size
         # self.root.resizable(False, False)
         self.root.resizable(True, True)
 
@@ -28,11 +28,13 @@ class GUI:
         self.layers_nodes_entry = tk.Entry(self.root)
         self.layers_nodes_entry.insert(0, "64")
 
-        self.random_count_label = tk.Label(self.root, text="Random number count for training:")
+        self.random_count_label = tk.Label(self.root, text="'Random number count' for training:")
         self.random_count_entry = tk.Entry(self.root)
         self.random_count_entry.insert(0, "1000")
 
         self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
+
+        self.reset_button = tk.Button(self.root, text="Reset Graph", command=self.reset_graph)
 
         self.exit_button = tk.Button(self.root, text="Exit", command=self.exit_program)
 
@@ -45,10 +47,10 @@ class GUI:
         self.random_count_label.grid(row=3, column=0, padx=10, pady=10)
         self.random_count_entry.grid(row=3, column=1, padx=10, pady=10)
         self.predict_button.grid(row=4, column=0, padx=10, pady=10)
-        self.exit_button.grid(row=4, column=1, padx=10, pady=10)
+        self.reset_button.grid(row=4, column=1, padx=10, pady=10)
 
         self.progress_label = tk.Label(self.root, text="Training Progress:")
-        self.progress_bar = ttk.Progressbar(self.root, mode="determinate", length=400)
+        self.progress_bar = ttk.Progressbar(self.root, mode="determinate", length=500)
 
         self.fig, self.ax = plt.subplots(2, 1, figsize=(6, 4))
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
@@ -63,6 +65,20 @@ class GUI:
 
         self.prediction_label.grid(row=8, column=0, columnspan=2, padx=10, pady=10)
         self.prediction_entry.grid(row=8, column=1, columnspan=2, padx=10, pady=10)
+
+        self.final_loss_label = tk.Label(self.root, text="Final Loss:")
+        self.final_loss_entry = tk.Entry(self.root, state="readonly")
+
+        self.final_accuracy_label = tk.Label(self.root, text="Final Accuracy:")
+        self.final_accuracy_entry = tk.Entry(self.root, state="readonly")
+
+        self.final_loss_label.grid(row=9, column=0, columnspan=2, padx=10, pady=10)
+        self.final_loss_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=10)
+        self.final_accuracy_label.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
+        self.final_accuracy_entry.grid(row=10, column=1, columnspan=2, padx=10, pady=10)
+
+        self.exit_button.grid(row=11, column=1, padx=10, pady=10, sticky="")
+
 
     def predict(self):
         threshold = float(self.threshold_entry.get())
@@ -93,13 +109,26 @@ class GUI:
         self.prediction_entry.insert(0, prediction_value)
         self.prediction_entry.configure(state="readonly")
 
-        messagebox.showinfo("Training Info", f"Final Loss: {history.history['loss'][-1]:.4f}\nFinal Accuracy: {history.history['accuracy'][-1]:.4f}")
+        self.final_loss_entry.configure(state="normal")
+        self.final_loss_entry.delete(0, tk.END)
+        self.final_loss_entry.insert(0, f"{history.history['loss'][-1]:.4f}")
+        self.final_loss_entry.configure(state="readonly")
+
+        self.final_accuracy_entry.configure(state="normal")
+        self.final_accuracy_entry.delete(0, tk.END)
+        self.final_accuracy_entry.insert(0, f"{history.history['accuracy'][-1]:.4f}")
+        self.final_accuracy_entry.configure(state="readonly")
 
         self.ax[0].plot(history.history['loss'], label='Loss')
         self.ax[1].plot(history.history['accuracy'], label='Accuracy', color='green')
         self.ax[0].legend()
         self.ax[1].legend()
         self.fig.tight_layout()
+        self.canvas.draw()
+
+    def reset_graph(self):
+        self.ax[0].clear()
+        self.ax[1].clear()
         self.canvas.draw()
 
     def exit_program(self):

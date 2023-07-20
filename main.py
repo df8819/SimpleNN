@@ -31,7 +31,7 @@ class GUI:
         self.nodes_entry = tk.Entry(self.root)
         self.nodes_entry.insert(0, "16")
 
-        self.random_count_label = tk.Label(self.root, text="'Random number count' for training:")
+        self.random_count_label = tk.Label(self.root, text="Random number count for training:")
         self.random_count_entry = tk.Entry(self.root)
         self.random_count_entry.insert(0, "1000")
 
@@ -187,7 +187,7 @@ class GUI:
             - Enter the numbers of nodes in each layer.
             - {layers} * {nodes} = Neurons.
 
-        5. 'Random number count' for training:
+        5. Random number count for training:
            - Enter the count of random numbers to generate for training the model.
 
         6. Predict Button:

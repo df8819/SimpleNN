@@ -16,19 +16,19 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 
 ## Features
 
-- Reference Number (between 0 and 1): Enter a decimal number between 0 and 1. This number serves as a reference for the classification.
-- Number to predict (between 0 and 1): Enter a decimal number between 0 and 1. This number will be classified as higher or lower than the reference number.
-- Layers/Nodes (Brain size): Enter the number of nodes to use in each layer of the neural network. The model uses a three-layer architecture with the same number of nodes in each layer.
-- 'Random number count' for training: Enter the count of random numbers to generate for training the model.
-- Predict Button: Click this button to perform the prediction based on the provided inputs.
-- Reset Graph Button: Click this button to clear the training progress graph.
-- Note: The prediction value closer to 1 indicates a higher prediction, while closer to 0 indicates a lower prediction.
+- Reference Number: Enter a decimal number between 0 and 1. This number serves as a reference for the classification.
+- Number to predict: Enter a decimal number between 0 and 1. This number will be classified as higher or lower than the reference number.
+- Layers/Nodes: Enter the number of layers and nodes to use in the neural network.
+- Random number count: Enter the count of random numbers to generate for training the model.
+- 'Predict' Button: Click this button to perform the prediction based on the provided inputs.
+- 'Reset Graph' Button: Click this button to clear the training progress graph.
+- Note: The prediction will be displayed as % value after the training.
 
 ## Guide
 
-- A simple user guide is implemented in the app itself. Click the "Guide" button for more information.
+- A simple user guide is implemented in the app itself. Click the 'Guide' button for more information.
 
 ## Note:
-The Number Classifier application is a simplified example and may not provide accurate predictions for complex scenarios. It is intended for learning purposes and as a starting point for further development.
+The Number Classifier application is a simplified example and may not provide accurate predictions for complex scenarios. It is intended for learning purposes and as a starting point for further development and a better understanding of neural networks.
 
-![Main Window](/1689872799.png)
+![Main Window](/1689889302.png)

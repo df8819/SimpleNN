@@ -30,6 +30,6 @@
 ## 9. Prediction
 - After being trained, the model utilizes its acquired weights to determine whether the 'Number to Predict' is equal to or greater than the reference number.
 
-- The whole training on a 1000 random numbers is just for one single prediction of the classification of the "Number to predict".
+- The whole training on the chosen 'Random random count' is just for one single prediction of the classification of the "Number to predict".
 
 - The goal of the model is to learn the boundary (the reference number) that separates the numbers into two categories. The better it can learn this boundary, the better it can predict the category of a new number.

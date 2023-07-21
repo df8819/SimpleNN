@@ -63,8 +63,8 @@ class GUI:
         self.reset_button.grid(row=5, column=1, padx=10, pady=10)
         self.visualize_button.grid(row=6, column=0, padx=10, pady=10)
         self.training_data_button.grid(row=6, column=1, padx=10, pady=10)
-        self.guide_button.grid(row=13, column=0, padx=(10, 20), pady=10)
-        self.exit_button.grid(row=13, column=1, padx=(10, 20), pady=10)
+        self.guide_button.grid(row=14, column=0, padx=(10, 20), pady=10)
+        self.exit_button.grid(row=14, column=1, padx=(10, 20), pady=10)
 
         self.progress_label = tk.Label(self.root, text="Training Progress:")
         self.progress_bar = ttk.Progressbar(self.root, mode="determinate", length=500)
@@ -93,6 +93,14 @@ class GUI:
         self.final_loss_entry.grid(row=11, column=1, columnspan=2, padx=10, pady=10)
         self.final_accuracy_label.grid(row=12, column=0, columnspan=2, padx=10, pady=10)
         self.final_accuracy_entry.grid(row=12, column=1, columnspan=2, padx=10, pady=10)
+
+        # Add the following lines in your __init__ method
+        self.calculations_label = tk.Label(self.root, text="Total Calculations:")
+        self.calculations_entry = tk.Entry(self.root, state="readonly")
+
+        # Position the label and entry in the grid
+        self.calculations_label.grid(row=13, column=0, columnspan=2, padx=10, pady=10)
+        self.calculations_entry.grid(row=13, column=1, columnspan=2, padx=10, pady=10)
 
     def visualize_brain(self):
         # Display a messagebox and get the user's response
@@ -171,7 +179,7 @@ class GUI:
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         window_width = 620  # Adjust the window width here
-        window_height = 1000  # Adjust the window height here
+        window_height = 1050  # Adjust the window height here
         self.root.resizable(False, False)
         x = int((screen_width / 2) - (window_width / 2))
         y = int((screen_height / 2) - (window_height / 2))
@@ -233,6 +241,22 @@ class GUI:
         self.fig.tight_layout()
         self.canvas.draw()
 
+        # Calculate the total number of parameters
+        total_parameters = 2 * nodes_input + layers_input * (nodes_input ** 2 + nodes_input) + nodes_input + 1
+
+        # Calculate the total number of calculations per epoch
+        calculations_per_epoch = 4 * total_parameters * (random_count / 10)
+
+        # Calculate the total number of calculations over the entire training process
+        total_calculations = 100 * calculations_per_epoch
+
+        # Format the number with single quotes as thousands separators
+        formatted_calculations = "{:,}".format(int(total_calculations)).replace(",", "'")
+
+        self.calculations_entry.configure(state="normal")
+        self.calculations_entry.delete(0, tk.END)
+        self.calculations_entry.insert(0, formatted_calculations)
+        self.calculations_entry.configure(state="readonly")
     def show_training_data(self):
         training_data_str = ", ".join(map(str, self.x_train.flatten()))
 

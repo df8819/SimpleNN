@@ -364,6 +364,11 @@ class GUI:
         self.final_accuracy_entry.delete(0, tk.END)
         self.final_accuracy_entry.configure(state='readonly')
 
+        # Clear the Calculations field
+        self.calculations_entry.configure(state='normal')
+        self.calculations_entry.delete(0, tk.END)
+        self.calculations_entry.configure(state='readonly')
+
     def exit_program(self):
         answer = messagebox.askyesno("Exit Confirmation", "Are you sure you want to exit?")
         if answer:

@@ -268,7 +268,7 @@ class GUI:
         scroll_bar.grid(row=0, column=1, sticky='ns')
         copy_button.grid(row=1, column=0, padx=20, pady=20, sticky='e')
 
-        benford_button = tk.Button(new_window, text="Benford it!", command=self.benford_analysis, padx=10, pady=10)
+        benford_button = tk.Button(new_window, text="Digit Distribution", command=self.benford_analysis, padx=10, pady=10)
         benford_button.grid(row=2, column=0, padx=10, pady=10, sticky='e')
 
         # Configure grid column and row weights
@@ -298,7 +298,7 @@ class GUI:
 
         # Create new Toplevel window
         benford_window = tk.Toplevel(self.root)
-        benford_window.title("Benford's Law Analysis")
+        benford_window.title("Experimental feature")
 
         # Position the window in the center of the screen
         window_width = 800

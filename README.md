@@ -4,6 +4,7 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 
 ## Requirements
 
+- Everyone can play around with this app. **NO** coding skills required😇
 - [Python 3.x](https://www.python.org/downloads/)
 - [Git for Desktop](https://git-scm.com/downloads)
 

@@ -47,8 +47,8 @@ class GUI:
         self.threshold_label.grid(row=0, column=0, padx=10, pady=10)
         self.threshold_entry.grid(row=0, column=1, padx=10, pady=10)
 
-        self.number_label.grid(row=1, column=0, padx=10, pady=10)
-        self.number_entry.grid(row=1, column=1, padx=10, pady=10)
+        self.number_label.grid(row=4, column=0, padx=10, pady=10)
+        self.number_entry.grid(row=4, column=1, padx=10, pady=10)
 
         self.layers_label.grid(row=2, column=0, padx=10, pady=10)
         self.layers_entry.grid(row=2, column=1, padx=10, pady=10)
@@ -56,8 +56,8 @@ class GUI:
         self.nodes_label.grid(row=3, column=0, padx=10, pady=10)
         self.nodes_entry.grid(row=3, column=1, padx=10, pady=10)
 
-        self.random_count_label.grid(row=4, column=0, padx=10, pady=10)
-        self.random_count_entry.grid(row=4, column=1, padx=10, pady=10)
+        self.random_count_label.grid(row=1, column=0, padx=10, pady=10)
+        self.random_count_entry.grid(row=1, column=1, padx=10, pady=10)
 
         self.predict_button.grid(row=5, column=0, padx=10, pady=10)
         self.reset_button.grid(row=5, column=1, padx=10, pady=10)

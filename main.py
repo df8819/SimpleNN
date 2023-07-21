@@ -37,12 +37,12 @@ class GUI:
         self.random_count_entry = tk.Entry(self.root)
         self.random_count_entry.insert(0, "500")
 
-        self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
-        self.reset_button = tk.Button(self.root, text="Reset Graph", command=self.reset_graph)
-        self.visualize_button = tk.Button(self.root, text="Visualize Brain", command=self.visualize_brain)
-        self.training_data_button = tk.Button(self.root, text="Training Data", command=self.show_training_data)
-        self.guide_button = tk.Button(self.root, text="Guide", command=self.show_guide)
-        self.exit_button = tk.Button(self.root, text="Exit", command=self.exit_program)
+        self.predict_button = tk.Button(self.root, text="Predict", command=self.predict, padx=5, pady=5)
+        self.reset_button = tk.Button(self.root, text="Reset Graph", command=self.reset_graph, padx=5, pady=5)
+        self.visualize_button = tk.Button(self.root, text="Visualize Brain", command=self.visualize_brain, padx=5, pady=5)
+        self.training_data_button = tk.Button(self.root, text="Training Data", command=self.show_training_data, padx=5, pady=5)
+        self.guide_button = tk.Button(self.root, text="Guide", command=self.show_guide, padx=5, pady=5)
+        self.exit_button = tk.Button(self.root, text="Exit", command=self.exit_program, padx=5, pady=5)
 
         self.threshold_label.grid(row=0, column=0, padx=10, pady=10)
         self.threshold_entry.grid(row=0, column=1, padx=10, pady=10)
@@ -171,7 +171,7 @@ class GUI:
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         window_width = 620  # Adjust the window width here
-        window_height = 980  # Adjust the window height here
+        window_height = 1000  # Adjust the window height here
         self.root.resizable(False, False)
         x = int((screen_width / 2) - (window_width / 2))
         y = int((screen_height / 2) - (window_height / 2))
@@ -240,8 +240,14 @@ class GUI:
         new_window = tk.Toplevel(self.root)
         new_window.title("Training Data Set")
 
-        # Set the window size
-        new_window.geometry('1200x900')
+        # Position the window in the center of the screen
+        window_width = 1200
+        window_height = 900
+        screen_width = new_window.winfo_screenwidth()
+        screen_height = new_window.winfo_screenheight()
+        position_top = int(screen_height / 2 - window_height / 2)
+        position_right = int(screen_width / 2 - window_width / 2)
+        new_window.geometry(f'{window_width}x{window_height}+{position_right}+{position_top}')
 
         # Create a Scrollbar
         scroll_bar = tk.Scrollbar(new_window)
@@ -255,12 +261,15 @@ class GUI:
 
         # Add 'Copy' button with padding
         copy_button = tk.Button(new_window, text="Copy", command=lambda: self.copy_to_clipboard(training_data_str),
-                                padx=10, pady=10)
+                                padx=5, pady=5)
 
         # Use grid layout manager
         text_widget.grid(row=0, column=0, padx=20, pady=20, sticky='nsew')
         scroll_bar.grid(row=0, column=1, sticky='ns')
         copy_button.grid(row=1, column=0, padx=20, pady=20, sticky='e')
+
+        benford_button = tk.Button(new_window, text="Benford it!", command=self.benford_analysis, padx=10, pady=10)
+        benford_button.grid(row=2, column=0, padx=20, pady=20, sticky='e')
 
         # Configure grid column and row weights
         new_window.grid_columnconfigure(0, weight=1)
@@ -268,6 +277,44 @@ class GUI:
 
         # Enable 'Ctrl+C' for copying from the text widget
         new_window.bind('<Control-c>', lambda e: self.copy_to_clipboard(text_widget.get("1.0", tk.END)))
+
+    def benford_analysis(self):
+        from matplotlib.figure import Figure
+
+        # Extract the first digit after the decimal point from each number in the training set
+        first_digits = [int(str(x)[2]) for x in self.x_train.flatten() if str(x)[2].isdigit()]
+
+        # Compute the distribution of the first digits
+        digit_counts = np.bincount(first_digits)[1:]  # Exclude the count for the digit 0
+        digit_percentages = digit_counts / np.sum(digit_counts)
+
+        # Create a new figure and display a bar graph of the digit distribution
+        fig = Figure(figsize=(8, 6))
+        ax = fig.add_subplot(111)
+        ax.bar(range(1, 10), digit_percentages, tick_label=range(1, 10))
+        ax.set_xlabel('First Digit After Decimal Point')
+        ax.set_ylabel('Percentage')
+        ax.set_title("Distribution of First Digits After Decimal Point in Training Data")
+
+        # Create new Toplevel window
+        benford_window = tk.Toplevel(self.root)
+        benford_window.title("Benford's Law Analysis")
+
+        # Position the window in the center of the screen
+        window_width = 800
+        window_height = 600
+        screen_width = benford_window.winfo_screenwidth()
+        screen_height = benford_window.winfo_screenheight()
+        position_top = int(screen_height / 2 - window_height / 2)
+        position_right = int(screen_width / 2 - window_width / 2)
+        benford_window.geometry(f'{window_width}x{window_height}+{position_right}+{position_top}')
+
+        # Create a new FigureCanvasTkAgg object in the new window
+        canvas = FigureCanvasTkAgg(fig, master=benford_window)
+        canvas.draw()
+
+        # Add the canvas to the window and allow it to expand and fill both directions
+        canvas.get_tk_widget().pack(expand=True, fill='both')
 
     def copy_to_clipboard(self, text):
         self.root.clipboard_clear()

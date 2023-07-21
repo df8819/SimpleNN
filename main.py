@@ -22,19 +22,19 @@ class GUI:
 
         self.number_label = tk.Label(self.root, text="Number to predict (between 0 and 1):")
         self.number_entry = tk.Entry(self.root)
-        self.number_entry.insert(0, "0.527")
+        self.number_entry.insert(0, "0.537")
 
         self.layers_label = tk.Label(self.root, text="Layers:")
         self.layers_entry = tk.Entry(self.root)
-        self.layers_entry.insert(0, "3")
+        self.layers_entry.insert(0, "4")
 
         self.nodes_label = tk.Label(self.root, text="Nodes per Layer:")
         self.nodes_entry = tk.Entry(self.root)
-        self.nodes_entry.insert(0, "4")
+        self.nodes_entry.insert(0, "6")
 
         self.random_count_label = tk.Label(self.root, text="Random number count for training:")
         self.random_count_entry = tk.Entry(self.root)
-        self.random_count_entry.insert(0, "1000")
+        self.random_count_entry.insert(0, "500")
 
         self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
 

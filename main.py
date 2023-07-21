@@ -12,6 +12,7 @@ import keras
 
 class GUI:
     def __init__(self):
+        self.x_train = None
         self.root = tk.Tk()
         self.root.title("Number Classifier - 'Feed forward neural Network' for educational purposes")
         self.center_window()  # Center the main window
@@ -111,36 +112,36 @@ class GUI:
         nodes_per_layer = int(self.nodes_entry.get())
 
         # Create a new graph
-        G = nx.DiGraph()
+        g = nx.DiGraph()
 
         # Add node for input layer
-        G.add_node((0, 0), pos=(0, 0.5), color='g')
+        g.add_node((0, 0), pos=(0, 0.5), color='g')
 
         # Add nodes and edges for each hidden layer
         for layer in range(1, layers + 1):
             if layer == layers:  # output layer
-                G.add_node((layer, 0), pos=(layer, 0.5), color='b')
+                g.add_node((layer, 0), pos=(layer, 0.5), color='b')
                 for prev_node in range(nodes_per_layer):
-                    G.add_edge((layer - 1, prev_node), (layer, 0))
+                    g.add_edge((layer - 1, prev_node), (layer, 0))
             else:  # hidden layers
                 for node in range(nodes_per_layer):
                     # Calculate the position of the node
                     pos = (layer, node / (nodes_per_layer - 1) if nodes_per_layer > 1 else 0.5)
 
                     # Add the node to the graph
-                    G.add_node((layer, node), pos=pos, color='y')
+                    g.add_node((layer, node), pos=pos, color='y')
 
                     # Connect the node to all nodes in the previous layer
                     for prev_node in range(nodes_per_layer if layer > 1 else 1):
-                        G.add_edge((layer - 1, prev_node), (layer, node))
+                        g.add_edge((layer - 1, prev_node), (layer, node))
 
         # Get node positions and colors
-        pos = nx.get_node_attributes(G, 'pos')
-        colors = [color for _, color in nx.get_node_attributes(G, 'color').items()]
+        pos = nx.get_node_attributes(g, 'pos')
+        colors = [color for _, color in nx.get_node_attributes(g, 'color').items()]
 
         # Create a new figure and draw the graph
         fig, ax = plt.subplots()
-        nx.draw(G, pos, node_color=colors, with_labels=True, ax=ax)
+        nx.draw(g, pos, node_color=colors, with_labels=True, ax=ax)
 
         # Create a new window
         new_window = tk.Toplevel(self.root)

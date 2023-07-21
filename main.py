@@ -238,7 +238,7 @@ class GUI:
 
         # Create new Toplevel window
         new_window = tk.Toplevel(self.root)
-        new_window.title("Training Data Set")
+        new_window.title("Training Data Set from 'Random number count'")
 
         # Position the window in the center of the screen
         window_width = 1200

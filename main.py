@@ -269,7 +269,7 @@ class GUI:
         copy_button.grid(row=1, column=0, padx=20, pady=20, sticky='e')
 
         benford_button = tk.Button(new_window, text="Benford it!", command=self.benford_analysis, padx=10, pady=10)
-        benford_button.grid(row=2, column=0, padx=20, pady=20, sticky='e')
+        benford_button.grid(row=2, column=0, padx=10, pady=10, sticky='e')
 
         # Configure grid column and row weights
         new_window.grid_columnconfigure(0, weight=1)

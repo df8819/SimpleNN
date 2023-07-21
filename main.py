@@ -235,7 +235,43 @@ class GUI:
 
     def show_training_data(self):
         training_data_str = ", ".join(map(str, self.x_train.flatten()))
-        tk.messagebox.showinfo("Training Data Set (Random Numbers)", training_data_str)
+
+        # Create new Toplevel window
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Training Data Set")
+
+        # Set the window size
+        new_window.geometry('1200x900')
+
+        # Create a Scrollbar
+        scroll_bar = tk.Scrollbar(new_window)
+
+        # Add text widget with training data
+        text_widget = tk.Text(new_window, width=1000, height=800, yscrollcommand=scroll_bar.set)
+        text_widget.insert(tk.END, training_data_str)
+
+        # Configure the Scrollbar
+        scroll_bar.config(command=text_widget.yview)
+
+        # Add 'Copy' button with padding
+        copy_button = tk.Button(new_window, text="Copy", command=lambda: self.copy_to_clipboard(training_data_str),
+                                padx=10, pady=10)
+
+        # Use grid layout manager
+        text_widget.grid(row=0, column=0, padx=20, pady=20, sticky='nsew')
+        scroll_bar.grid(row=0, column=1, sticky='ns')
+        copy_button.grid(row=1, column=0, padx=20, pady=20, sticky='e')
+
+        # Configure grid column and row weights
+        new_window.grid_columnconfigure(0, weight=1)
+        new_window.grid_rowconfigure(0, weight=1)
+
+        # Enable 'Ctrl+C' for copying from the text widget
+        new_window.bind('<Control-c>', lambda e: self.copy_to_clipboard(text_widget.get("1.0", tk.END)))
+
+    def copy_to_clipboard(self, text):
+        self.root.clipboard_clear()
+        self.root.clipboard_append(text)
 
     def reset_graph(self):
         self.ax[0].clear()

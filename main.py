@@ -400,7 +400,10 @@ class GUI:
            - Click this button to clear the training progress graph.
 
         8. Visualize Brain Button:
-            - Opens a window for a visual representation of the current model.   
+            - Opens a window for a visual representation of the current model.
+            
+        9. Training Data Button:
+            - Opens a window to show the random numbers used for the training.       
 
         Note:
         - This app is for educational purposes and people who
@@ -416,7 +419,7 @@ class GUI:
         guide_window.resizable(False, False)
         font_style = font.Font(family="Arial", size=10)  # Adjust the font size here
 
-        text = tk.Text(guide_window, font=font_style, width=80, height=40)  # Adjust the height to your desired value
+        text = tk.Text(guide_window, font=font_style, width=80, height=42)  # Adjust the height to your desired value
         text.insert(tk.END, guide)
         text.pack()
 

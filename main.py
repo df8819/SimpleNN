@@ -213,7 +213,7 @@ class GUI:
 
     def show_training_data(self):
         training_data_str = ", ".join(map(str, self.x_train.flatten()))
-        tk.messagebox.showinfo("Training Data", training_data_str)
+        tk.messagebox.showinfo("Training Data Set (Random Numbers)", training_data_str)
 
     def reset_graph(self):
         self.ax[0].clear()

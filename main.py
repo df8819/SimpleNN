@@ -37,13 +37,10 @@ class GUI:
         self.random_count_entry.insert(0, "500")
 
         self.predict_button = tk.Button(self.root, text="Predict", command=self.predict)
-
         self.reset_button = tk.Button(self.root, text="Reset Graph", command=self.reset_graph)
-
         self.visualize_button = tk.Button(self.root, text="Visualize Brain", command=self.visualize_brain)
-
+        self.training_data_button = tk.Button(self.root, text="Training Data", command=self.show_training_data)
         self.guide_button = tk.Button(self.root, text="Guide", command=self.show_guide)
-
         self.exit_button = tk.Button(self.root, text="Exit", command=self.exit_program)
 
         self.threshold_label.grid(row=0, column=0, padx=10, pady=10)
@@ -64,6 +61,7 @@ class GUI:
         self.predict_button.grid(row=5, column=0, padx=10, pady=10)
         self.reset_button.grid(row=5, column=1, padx=10, pady=10)
         self.visualize_button.grid(row=6, column=0, padx=10, pady=10)
+        self.training_data_button.grid(row=6, column=1, padx=10, pady=10)
         self.guide_button.grid(row=13, column=0, padx=(10, 20), pady=10)
         self.exit_button.grid(row=13, column=1, padx=(10, 20), pady=10)
 
@@ -165,6 +163,7 @@ class GUI:
         random_count = int(self.random_count_entry.get())
 
         x_train = np.random.uniform(0, 1, size=(random_count, 1)).round(8)
+        self.x_train = x_train
         y_train = (x_train >= threshold).astype(int)
 
         model = Sequential()
@@ -211,6 +210,10 @@ class GUI:
 
         self.fig.tight_layout()
         self.canvas.draw()
+
+    def show_training_data(self):
+        training_data_str = ", ".join(map(str, self.x_train.flatten()))
+        tk.messagebox.showinfo("Training Data", training_data_str)
 
     def reset_graph(self):
         self.ax[0].clear()

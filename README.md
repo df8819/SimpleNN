@@ -25,7 +25,7 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 - 'Predict' Button: Click this button to perform the prediction based on the provided inputs.
 - 'Reset Graph' Button: Click this button to clear the training progress graph.
 - 'Visualize Brain' Button: Opens a window for a visual representation of the current model.
-- 'Training Data' Button: Opens a window for a visual representation of the random numbers used to train the model.
+- 'Training Data' Button: Opens a window for a visual representation of the random numbers used to train the model. The 'Digit Distribution' Button is a random experimental feature👀
 - Note: The prediction will be displayed as % value after the training.
 
 ## Guide

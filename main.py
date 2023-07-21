@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, font
 
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import networkx as nx
 import keras
 
@@ -96,8 +96,8 @@ class GUI:
     def visualize_brain(self):
         # Display a messagebox and get the user's response
         response = tk.messagebox.askyesno("WARNING - High CPU demand",
-                                          "WARNING:\n\nA big brain size (16 * 128 Neurons for example) can crash"
-                                          " the app or take VERY long to load the visualization. (And will"
+                                          "WARNING:\n\nA big brain size (16 * 128 Neurons for example)"
+                                          " can take VERY long to create the visualization. (And will"
                                           " probably lag harder than 'Redfall' on release) \n\nContinue?")
 
         # If the user clicked 'No', return without doing anything
@@ -142,8 +142,20 @@ class GUI:
         fig, ax = plt.subplots()
         nx.draw(G, pos, node_color=colors, with_labels=True, ax=ax)
 
-        # Show the plot
-        plt.show()
+        # Create a new window
+        new_window = tk.Toplevel(self.root)
+        new_window.title('Brain Visualization')
+
+        # Create a new FigureCanvasTkAgg object in the new window
+        canvas = FigureCanvasTkAgg(fig, master=new_window)
+        canvas.draw()
+
+        # Add the canvas to the window and allow it to expand and fill both directions
+        canvas.get_tk_widget().pack(expand=True, fill='both')
+
+        # Add Navigation Toolbar
+        toolbar = NavigationToolbar2Tk(canvas, new_window)
+        toolbar.update()
 
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()

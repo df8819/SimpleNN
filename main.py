@@ -157,6 +157,15 @@ class GUI:
         toolbar = NavigationToolbar2Tk(canvas, new_window)
         toolbar.update()
 
+        # Center the new window
+        new_window.update_idletasks()  # Update window size before centering
+        width = 1600
+        height = 900
+        new_window.geometry('{}x{}'.format(width, height))  # Width x Height
+        x = (new_window.winfo_screenwidth() // 2) - (width // 2)
+        y = (new_window.winfo_screenheight() // 2) - (height // 2)
+        new_window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
@@ -268,7 +277,7 @@ class GUI:
         3. Layers:
            - Enter the number of layers.
            - {layers} * {nodes} = Neurons.
-           
+
         4. Nodes:
             - Enter the numbers of nodes in each layer.
             - {layers} * {nodes} = Neurons.
@@ -281,7 +290,7 @@ class GUI:
 
         7. Reset Graph Button:
            - Click this button to clear the training progress graph.
-           
+
         8. Visualize Brain Button:
             - Opens a window for a visual representation of the current model.   
 

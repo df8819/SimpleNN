@@ -396,7 +396,7 @@ class GUI:
 
     def show_guide(self):
         guide = """
-        Number Classifier - 'Feed forward neural Network' - User Guide
+        Number Classifier - 'Feed forward neural network' - User Guide
 
         1. Reference Number - Threshold (between 0 and 1):
            - Enter a decimal number between 0 and 1.

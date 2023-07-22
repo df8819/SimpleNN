@@ -40,7 +40,7 @@ class GUI:
         self.predict_button = tk.Button(self.root, text="Predict", command=self.predict, padx=5, pady=5)
         self.reset_button = tk.Button(self.root, text="Reset Graph", command=self.reset_graph, padx=5, pady=5)
         self.visualize_button = tk.Button(self.root, text="Visualize Brain", command=self.visualize_brain, padx=5, pady=5)
-        self.training_data_button = tk.Button(self.root, text="Training Data", command=self.show_training_data, padx=5, pady=5)
+        self.training_data_button = tk.Button(self.root, text="Training Data", command=self.show_training_data_command, padx=5, pady=5)
         self.guide_button = tk.Button(self.root, text="Guide", command=self.show_guide, padx=5, pady=5)
         self.exit_button = tk.Button(self.root, text="Exit", command=self.exit_program, padx=5, pady=5)
 
@@ -257,7 +257,8 @@ class GUI:
         self.calculations_entry.delete(0, tk.END)
         self.calculations_entry.insert(0, formatted_calculations)
         self.calculations_entry.configure(state="readonly")
-    def show_training_data(self):
+
+    def show_training_data(self, random_count):
         training_data_str = ", ".join(map(str, self.x_train.flatten()))
 
         # Create new Toplevel window
@@ -287,13 +288,22 @@ class GUI:
         copy_button = tk.Button(new_window, text="Copy", command=lambda: self.copy_to_clipboard(training_data_str),
                                 padx=5, pady=5)
 
+        # Create label and read-only entry for total random numbers generated
+        random_count_label = tk.Label(new_window, text="Random Numbers generated: ")
+        random_count_entry = tk.Entry(new_window)
+        random_count_entry.insert(0, str(random_count))
+        random_count_entry.configure(state="readonly")
+
         # Use grid layout manager
+        scroll_bar.grid(row=0, column=2, sticky='ns')
+
+        random_count_label.grid(row=2, column=0, padx=20, pady=20, sticky="e")
+        random_count_entry.grid(row=2, column=1, padx=20, pady=20)
         text_widget.grid(row=0, column=0, padx=20, pady=20, sticky='nsew')
-        scroll_bar.grid(row=0, column=1, sticky='ns')
         copy_button.grid(row=1, column=0, padx=20, pady=20, sticky='e')
 
-        benford_button = tk.Button(new_window, text="Digit Distribution", command=self.benford_analysis, padx=10, pady=10)
-        benford_button.grid(row=2, column=0, padx=10, pady=10, sticky='e')
+        benford_button = tk.Button(new_window, text="Digit Distribution", command=self.benford_analysis, padx=5, pady=5)
+        benford_button.grid(row=1, column=1, padx=10, pady=10, sticky='e')
 
         # Configure grid column and row weights
         new_window.grid_columnconfigure(0, weight=1)
@@ -301,6 +311,10 @@ class GUI:
 
         # Enable 'Ctrl+C' for copying from the text widget
         new_window.bind('<Control-c>', lambda e: self.copy_to_clipboard(text_widget.get("1.0", tk.END)))
+
+    def show_training_data_command(self):
+        random_count = int(self.random_count_entry.get())
+        self.show_training_data(random_count)
 
     def benford_analysis(self):
         from matplotlib.figure import Figure

@@ -39,3 +39,7 @@ This is a simple number classification _(multi-layer perceptron / feed-forward n
 ![Main Window](/1690014966.png)
 
 ![Brain](/1689894983.png)
+
+![Training Set](/1690015091.png)
+
+![Bar-Graph](/1690015108.png)

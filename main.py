@@ -294,19 +294,25 @@ class GUI:
         random_count_entry.insert(0, str(random_count))
         random_count_entry.configure(state="readonly")
 
+        # Create label and read-only entry for total random numbers generated
+        random_count_label = tk.Label(new_window, text="Random Numbers generated: ")
+        random_count_entry = tk.Entry(new_window)
+        random_count_entry.insert(0, str(random_count))
+        random_count_entry.configure(state="readonly")
+
         # Use grid layout manager
-        scroll_bar.grid(row=0, column=2, sticky='ns')
-
-        random_count_label.grid(row=2, column=0, padx=20, pady=20, sticky="e")
-        random_count_entry.grid(row=2, column=1, padx=20, pady=20)
-        text_widget.grid(row=0, column=0, padx=20, pady=20, sticky='nsew')
+        text_widget.grid(row=0, column=0, columnspan=3, padx=20, pady=20, sticky='nsew')
+        scroll_bar.grid(row=0, column=3, sticky='ns')
         copy_button.grid(row=1, column=0, padx=20, pady=20, sticky='e')
-
         benford_button = tk.Button(new_window, text="Digit Distribution", command=self.benford_analysis, padx=5, pady=5)
-        benford_button.grid(row=1, column=1, padx=10, pady=10, sticky='e')
+        benford_button.grid(row=1, column=1, padx=10, pady=10, sticky='w')
+        random_count_label.grid(row=2, column=0, padx=20, pady=20, sticky="e")
+        random_count_entry.grid(row=2, column=1, padx=20, pady=20, sticky='w')
 
         # Configure grid column and row weights
         new_window.grid_columnconfigure(0, weight=1)
+        new_window.grid_columnconfigure(1, weight=1)
+        new_window.grid_columnconfigure(2, weight=1)
         new_window.grid_rowconfigure(0, weight=1)
 
         # Enable 'Ctrl+C' for copying from the text widget

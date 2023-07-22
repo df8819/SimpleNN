@@ -1,4 +1,4 @@
-
+# Specific files and directories to ignore
 training.txt
 .idea/vcs.xml
 .idea/SimpleNN.iml
@@ -7,3 +7,11 @@ training.txt
 .idea/inspectionProfiles/Project_Default.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/workspace.xml
+
+# Ignore all files with image extensions
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.svg

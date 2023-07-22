@@ -14,7 +14,7 @@ class GUI:
     def __init__(self):
         self.x_train = None
         self.root = tk.Tk()
-        self.root.title("Number Classifier - 'Feed forward neural Network' for educational purposes")
+        self.root.title("Number Classifier - 'Feed forward neural network' for educational purposes")
         self.center_window()  # Center the main window
 
         self.threshold_label = tk.Label(self.root, text="Reference Number - Threshold (between 0 and 1):")

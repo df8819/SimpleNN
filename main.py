@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import networkx as nx
 import tensorflow.keras as keras
+
+
 # import openai
 
 
@@ -206,8 +208,7 @@ class GUI:
 
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-        progress_callback = self.ProgressCallback()
-        progress_callback.model = self
+        progress_callback = self.ProgressCallback(self)
         history = model.fit(x_train, y_train, epochs=100, batch_size=10, verbose=0, callbacks=[progress_callback])
 
         prediction = model.predict(np.array([[number]]))
@@ -288,12 +289,6 @@ class GUI:
         # Add 'Copy' button with padding
         copy_button = tk.Button(new_window, text="Copy", command=lambda: self.copy_to_clipboard(training_data_str),
                                 padx=5, pady=5)
-
-        # Create label and read-only entry for total random numbers generated
-        random_count_label = tk.Label(new_window, text="Random Numbers generated: ")
-        random_count_entry = tk.Entry(new_window)
-        random_count_entry.insert(0, str(random_count))
-        random_count_entry.configure(state="readonly")
 
         # Create label and read-only entry for total random numbers generated
         random_count_label = tk.Label(new_window, text="Random Numbers generated: ")
@@ -427,7 +422,7 @@ class GUI:
 
         8. Visualize Brain Button:
             - Opens a window for a visual representation of the current model.
-            
+
         9. Training Data Button:
             - Opens a window to show the random numbers used for the training.       
 
@@ -450,14 +445,15 @@ class GUI:
         text.pack()
 
     class ProgressCallback(keras.callbacks.Callback):
-        def __init__(self):
+        def __init__(self, gui_instance):
             super().__init__()
+            self.gui_instance = gui_instance
             self.progress = 0
 
         def on_epoch_end(self, epoch, logs=None):
             self.progress += 1
-            self.model.progress_bar["value"] = self.progress
-            self.model.progress_bar.update()
+            self.gui_instance.progress_bar["value"] = self.progress
+            self.gui_instance.progress_bar.update()
 
         def set_model(self, model):
             pass

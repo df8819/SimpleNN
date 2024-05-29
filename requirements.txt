@@ -1,6 +1,7 @@
-numpy
+numpy~=1.26.4
 keras
-matplotlib
-networkx
-threading
+matplotlib~=3.9.0
+networkx~=3.3
 tkinter
+
+tensorflow~=2.16.1

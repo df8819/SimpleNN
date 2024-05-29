@@ -1,13 +1,13 @@
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
 import tkinter as tk
 from tkinter import ttk, messagebox, font
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import networkx as nx
-import keras
+import tensorflow.keras as keras
 # import openai
 
 
